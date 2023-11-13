@@ -1,0 +1,56 @@
+.cardWidth {
+	position: relative;
+	width: calc((100% - 4 * 16px) / 5);
+	margin: 0;
+}
+
+.icon {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 24px;
+	height: 24px;
+}
+
+.icon button {
+	padding: 0;
+}
+
+.red {
+	color: #f44336;
+}
+
+.discount {
+	font-size: 12px;
+	text-decoration: line-through;
+}
+
+.productWidth {
+	margin-top: 6px;
+	color: #7b8e97;
+	font-size: 12px;
+	line-height: normal;
+}
+
+.button {
+	padding: 10px 18px;
+	color: #1a1a1a;
+	font-weight: bold;
+	font-size: 16px;
+	text-transform: initial;
+	background-color: #ffe44d;
+	border-radius: 55px;
+}
+
+.img {
+	width: 100%;
+	height: auto;
+}
+
+.block {
+	width: 100%;
+	margin-top: 10px;
+	padding: 20px 30px;
+	background: rgb(236 239 241 / 50%);
+	border-radius: 12px;
+}
