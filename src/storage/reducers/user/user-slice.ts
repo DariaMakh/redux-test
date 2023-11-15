@@ -1,10 +1,6 @@
-import {
-	createAsyncThunk,
-	createSlice,
-	SerializedError,
-} from '@reduxjs/toolkit';
+import { createSlice, SerializedError } from '@reduxjs/toolkit';
 import { createAppAsyncThunk } from '../../hooks';
-import { Api, UserEditBodyDto } from '../../../api/api';
+import { UserEditBodyDto } from '../../../api/api';
 import {
 	isActionFulfilled,
 	isActionPending,
@@ -39,7 +35,7 @@ export const fetchEditedUser = createAppAsyncThunk<User, UserEditBodyDto>(
 		}
 	}
 );
-export const fetchUser = createAsyncThunk<User, void, { extra: Api }>(
+export const fetchUser = createAppAsyncThunk<User, void>(
 	`${sliceName}/fetchUser`,
 	async function (_, { fulfillWithValue, rejectWithValue, extra: api }) {
 		try {

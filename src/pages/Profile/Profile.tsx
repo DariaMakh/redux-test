@@ -4,12 +4,12 @@ import MailOutlinedIcon from '@mui/icons-material/MailOutlined';
 import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined';
 import s from './Profile.module.css';
 import OutlinedBtn from '../../components/OutlinedBtn';
-import { useContext, useEffect } from 'react';
-import { UserContext, UserContextType } from '../../context/user-context';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from '../../storage/hooks';
+import { selectUser } from '../../storage/reducers/user/selectors';
 
 const Profile = () => {
-	const { user } = useContext(UserContext) as UserContextType;
+	const user = useAppSelector(selectUser) as User;
 
 	return (
 		<>

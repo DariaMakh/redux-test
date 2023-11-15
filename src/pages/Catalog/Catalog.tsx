@@ -1,29 +1,27 @@
 import { Stack } from '@mui/system';
-import { useContext, useMemo } from 'react';
+import { useMemo } from 'react';
 import LocalBreadcrumbs from '../../components/Breadcrumbs';
 import ProductCardList from '../../components/ProductCardList';
 import Sort from '../../components/Sort';
 import Spinner from '../../components/Spinner';
 import PageTittle from '../../components/Title';
-import {
-	ProductsContext,
-	ProductsContextType,
-} from '../../context/product-context';
 import s from './Catalog.module.css';
+import { useAppSelector } from '../../storage/hooks';
+import { selectProducts } from '../../storage/reducers/products/selectors';
 
 const Catalog = () => {
-	const { products, loadingProducts, searchValue } = useContext(
-		ProductsContext
-	) as ProductsContextType;
+	const { products, loading } = useAppSelector(selectProducts);
 
 	const filterProducts = useMemo(() => {
-		if (searchValue !== '') {
-			return products.filter((item) =>
-				item.name.toLowerCase().includes(searchValue.toLowerCase())
-			);
-		}
-		return products;
-	}, [searchValue, products]);
+		//todo оправить поиск
+
+		// if (searchValue !== '') {
+		// 	return products.filter((item) =>
+		// 		item.name.toLowerCase().includes(searchValue.toLowerCase())
+		// 	);
+		// }
+		return products as Product[];
+	}, [products]);
 
 	return (
 		<div className={s.content}>
@@ -36,11 +34,7 @@ const Catalog = () => {
 				</Stack>
 			)}
 
-			{loadingProducts ? (
-				<Spinner />
-			) : (
-				<ProductCardList products={filterProducts} />
-			)}
+			{loading ? <Spinner /> : <ProductCardList products={filterProducts} />}
 		</div>
 	);
 };

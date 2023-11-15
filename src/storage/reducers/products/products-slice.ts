@@ -1,29 +1,21 @@
-import {
-	createAsyncThunk,
-	createSlice,
-	SerializedError,
-} from '@reduxjs/toolkit';
-import { Api } from '../../../api/api';
+import { createSlice, SerializedError } from '@reduxjs/toolkit';
 import { isActionPending, isActionRejected } from '../../../types/redux';
+import { createAppAsyncThunk } from '../../hooks';
 
 type TProductState = {
-	data: ProductsList | null;
+	products: Product[];
 	loading: boolean;
 	error: SerializedError | null | unknown;
 };
 
 const initialState: TProductState = {
-	data: null,
+	products: [],
 	loading: false,
 	error: null,
 };
 export const sliceName = 'productsList';
 
-export const fetchProductsList = createAsyncThunk<
-	ProductsList,
-	void,
-	{ extra: Api }
->(
+export const fetchProductsList = createAppAsyncThunk<ProductsList, void>(
 	`${sliceName}/fetchProducts`,
 	async function (_, { fulfillWithValue, rejectWithValue, extra: api }) {
 		try {
@@ -48,7 +40,7 @@ export const productsListSlice = createSlice({
 			.addCase(fetchProductsList.fulfilled, (state, action) => {
 				state.loading = false;
 				state.error = null;
-				state.data = action.payload;
+				state.products = action.payload.products;
 			})
 			.addMatcher(isActionPending(`${sliceName}/`), (state) => {
 				state.loading = true;
@@ -57,6 +49,7 @@ export const productsListSlice = createSlice({
 			.addMatcher(isActionRejected(`${sliceName}/`), (state, action) => {
 				state.loading = false;
 				state.error = action.payload;
+				state.products = [];
 			});
 		// .addMatcher(isActionFulfilled(`${sliceName}/`), (state, action) => {
 		// 	state.loading = false;
