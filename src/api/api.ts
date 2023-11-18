@@ -26,11 +26,6 @@ export class Api {
 	private getApiUrl(path: string) {
 		return `${this.baseUrl}${path}`;
 	}
-	//todo
-
-	// getAllInfo() {
-	// 	return Promise.all([this.getProductsList(), this.getUserInfo()]);
-	// }
 
 	getUserInfo() {
 		return fetch(this.getApiUrl('/users/me'), { headers: this.headers }).then(
@@ -46,6 +41,19 @@ export class Api {
 		}).then(this.onResponse<User>);
 	}
 
+	search(searchQuery: string) {
+		return fetch(this.getApiUrl(`/products/search?query=${searchQuery}`), {
+			headers: this.headers,
+		}).then(this.onResponse<Product[]>);
+	}
+
+	changeFavoriteProductStatus(id: string, like: boolean) {
+		return fetch(this.getApiUrl(`/products/likes/${id}`), {
+			method: like ? 'DELETE' : 'PUT',
+			headers: this.headers,
+		}).then(this.onResponse<Product>);
+	}
+
 	getProductsList() {
 		return fetch(this.getApiUrl('/products'), { headers: this.headers }).then(
 			this.onResponse<ProductsList>
@@ -56,6 +64,28 @@ export class Api {
 		return fetch(this.getApiUrl(`/products/${productID}`), {
 			headers: this.headers,
 		}).then(this.onResponse<Product>);
+	}
+
+	deleteProductById(id: string) {
+		return fetch(this.getApiUrl(`/products/${id}`), {
+			method: 'DELETE',
+			headers: this.headers,
+		}).then(this.onResponse<Product>);
+	}
+
+	getReviewsById(id: string) {
+		return fetch(this.getApiUrl(`/products/review/${id}`), {
+			method: 'GET',
+			headers: this.headers,
+		}).then(this.onResponse<Review[]>);
+	}
+
+	postReviewById(id: string, review: Review) {
+		return fetch(this.getApiUrl(`/products/review/${id}`), {
+			method: 'POST',
+			headers: this.headers,
+			body: JSON.stringify(review),
+		}).then(this.onResponse<Product[]>);
 	}
 }
 

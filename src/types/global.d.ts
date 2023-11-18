@@ -17,6 +17,7 @@ declare global {
 		_id: string;
 		wight: string;
 		author: User;
+		reviews: Review[];
 	}
 	interface User {
 		_id: string;
@@ -26,5 +27,19 @@ declare global {
 		email: string;
 		__v?: number;
 		group?: string;
+	}
+
+	type ProductLikeParam = {
+		_id: string;
+		likes: string[];
+	};
+
+	interface Review {
+		_id: string;
+		text: string;
+		author?: User;
+		product?: Product;
+		updated_at?: string;
+		created_at?: string;
 	}
 }

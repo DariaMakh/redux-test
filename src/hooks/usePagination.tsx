@@ -5,7 +5,7 @@ export default function usePagination<T>(data: T[], itemsPerPage: number) {
 	const countPage = Math.ceil(data.length / itemsPerPage);
 	const minPage = 1;
 
-	function getCurrentData() {
+	function getCurrentData(): T[] {
 		const start = (currentPage - 1) * itemsPerPage;
 		const end = start + itemsPerPage;
 		return data.slice(start, end);

@@ -10,6 +10,10 @@ import { FC, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import FavoritesIcon from '../FavoritesIcon';
 import s from './ProductCardPreview.module.css';
+import { isLiked } from '../../utils/products';
+import { selectUser } from '../../storage/reducers/user/selectors';
+import { useAppDispatch, useAppSelector } from '../../storage/hooks';
+import { fetchChangeFavoriteProduct } from '../../storage/reducers/products/products-slice';
 
 type IProductCardPreviewProps = {
 	key: number;
@@ -22,7 +26,11 @@ const ProductCardPreview: FC<IProductCardPreviewProps> = ({
 	discount,
 	wight,
 	pictures,
+	likes,
 }: IProductCardPreviewProps) => {
+	const currentUser = useAppSelector(selectUser);
+	const dispatch = useAppDispatch();
+	const like = isLiked(likes, (currentUser as User)._id);
 	const newPrice = useMemo(() => {
 		return discount !== 0 ? price - discount : price;
 	}, [discount, price]);
@@ -32,14 +40,21 @@ const ProductCardPreview: FC<IProductCardPreviewProps> = ({
 	}, [discount]);
 	const location = useLocation();
 
+	const onClickLike = () => {
+		dispatch(fetchChangeFavoriteProduct({ likes, _id }));
+	};
+
 	return (
 		<Card className={s.cardWidth} sx={{ boxShadow: 'none' }}>
 			<Link to={`/catalog/${_id}`} state={{ location, id: _id }}>
 				<CardMedia component='img' alt={name} height='auto' image={pictures} />
-				<div className={s.icon}>
-					<FavoritesIcon iconColor='grey' />
-				</div>
 			</Link>
+			<div className={s.icon}>
+				<FavoritesIcon
+					iconColor={like ? 'red' : 'grey'}
+					onClick={onClickLike}
+				/>
+			</div>
 			<CardContent sx={{ marginTop: '16', lineHeight: '100%' }}>
 				{discount !== 0 && (
 					<Typography variant='subtitle2' className={s.discount}>

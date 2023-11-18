@@ -1,18 +1,16 @@
 import { Stack, Typography } from '@mui/material';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ErrorContent from '../../components/ErrorContent';
 import ProductCardPreview from '../../components/ProductCardPreview';
 import Spinner from '../../components/Spinner';
 import PageTittle from '../../components/Title';
-import {
-	ProductsContext,
-	ProductsContextType,
-} from '../../context/product-context';
-import { UserContext, UserContextType } from '../../context/user-context';
+import { useAppSelector } from '../../storage/hooks';
+import { selectUser } from '../../storage/reducers/user/selectors';
+import { selectProducts } from '../../storage/reducers/products/selectors';
 
 const Favorites = () => {
-	const { user } = useContext(UserContext) as UserContextType;
-	const { products } = useContext(ProductsContext) as ProductsContextType;
+	const user = useAppSelector(selectUser) as User;
+	const { products } = useAppSelector(selectProducts);
 	const [loadingFavorites, setLoadingFavorites] = useState<boolean>(true);
 
 	const [favoritesProducts, setFavoritesProducts] =

@@ -7,6 +7,7 @@ interface IOutlinedBtnProps {
 	href: string;
 	btnSize?: 'medium' | 'small' | 'large' | undefined;
 	mt?: string;
+	onClick?: () => void;
 }
 
 const OutlinedBtn: FC<IOutlinedBtnProps> = ({
@@ -14,6 +15,7 @@ const OutlinedBtn: FC<IOutlinedBtnProps> = ({
 	href,
 	btnSize = 'medium',
 	mt,
+	onClick,
 }) => {
 	return (
 		<Button
@@ -21,7 +23,8 @@ const OutlinedBtn: FC<IOutlinedBtnProps> = ({
 			variant='outlined'
 			href={href}
 			className={s.btn}
-			sx={{ marginTop: mt }}>
+			sx={{ marginTop: mt }}
+			onClick={onClick}>
 			{text}
 		</Button>
 	);

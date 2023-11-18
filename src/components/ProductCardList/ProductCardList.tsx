@@ -1,15 +1,14 @@
 import { Pagination, Stack, Typography } from '@mui/material';
-import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { ChangeEvent, useMemo } from 'react';
 import usePagination from '../../hooks/usePagination';
 import { PER_PAGE } from '../../utils/constants';
 import ProductCardPreview from '../ProductCardPreview';
+import { useAppSelector } from '../../storage/hooks';
+import { selectProducts } from '../../storage/reducers/products/selectors';
+import Sort from '../Sort';
 
-type ProductCardListProps = {
-	products: Product[];
-};
-
-const ProductCardList: FC<ProductCardListProps> = ({ products }) => {
-	const [productsArray, setProductsArray] = useState<Product[]>(products);
+const ProductCardList = () => {
+	const { products } = useAppSelector(selectProducts);
 
 	const { currentPage, getCurrentData, countPage, setPagePaginate } =
 		usePagination<Product>(products, PER_PAGE);
@@ -18,12 +17,18 @@ const ProductCardList: FC<ProductCardListProps> = ({ products }) => {
 		setPagePaginate(page);
 	};
 
-	useEffect(() => {
-		setProductsArray(getCurrentData);
+	const productsArray = useMemo(() => {
+		return getCurrentData();
 	}, [getCurrentData]);
 
 	return (
 		<>
+			{products.length > 0 && (
+				<Stack sx={{ marginTop: '20px' }}>
+					<Sort />
+				</Stack>
+			)}
+
 			<Stack
 				direction='row'
 				spacing={1}

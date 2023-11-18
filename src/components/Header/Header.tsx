@@ -7,27 +7,25 @@ import CartIcon from '../CartIcon';
 import ProfileIcon from '../ProfileIcon';
 import s from './Header.module.css';
 import { FC } from 'react';
+import { Link } from 'react-router-dom';
 
-type HeaderProps = {
-	searchValue: string;
-	setSearchValue: (value: string) => void;
-};
-
-const Header: FC<HeaderProps> = ({ searchValue, setSearchValue }) => {
+const Header = () => {
 	return (
 		<Box className={s.wrap}>
 			<AppBar position='static' className={s.appBar}>
 				<Container maxWidth='lg' style={{ padding: 0 }}>
 					<Toolbar className={s.flex}>
 						<Logo />
-						<Search searchValue={searchValue} setSearchValue={setSearchValue} />
+						<Search />
 						<div className={s.flex}>
 							<Box
 								sx={{
 									display: { xs: 'none', md: 'flex' },
 									alignItems: 'center',
 								}}>
-								<FavoritesIcon />
+								<Link to='/favorites'>
+									<FavoritesIcon />
+								</Link>
 								<CartIcon />
 								<ProfileIcon />
 							</Box>
