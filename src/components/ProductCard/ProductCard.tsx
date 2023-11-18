@@ -4,11 +4,13 @@ import { FC, useMemo } from 'react';
 import FavoritesIcon from '../FavoritesIcon';
 import PageTittle from '../Title';
 import s from './ProductCard.module.css';
+import ProductReview from '../ProductReview';
+import OutlinedBtn from '../OutlinedBtn';
+import { Link } from 'react-router-dom';
 
 type IProductCardProps = {
 	key: string;
 	product: Product;
-	onAddToCart: (id: string) => void;
 };
 
 const ProductCard: FC<IProductCardProps> = ({ product }) => {
@@ -88,16 +90,16 @@ const ProductCard: FC<IProductCardProps> = ({ product }) => {
 				</Grid>
 			</Grid>
 
-			<Stack direction='column' gap='8px' marginTop='20px'>
-				<Typography variant='h5'>Описание</Typography>
+			<Stack direction='column' gap='8px' marginTop='40px'>
+				<Typography variant='h5' fontWeight='600'>
+					Описание
+				</Typography>
 				<Typography variant='body1' gutterBottom>
-					Бублик из бычьего корня-забавная, интересная, вкусная, а главное
-					полезная вкусняшка для вашего любимца. Неповторимый вкус этого
-					лакомства надолго отвлечет Вашего питомца от любых дел.
+					{product.description}
 				</Typography>
 			</Stack>
 
-			<Stack direction='column' gap='8px' marginTop='20px'>
+			<Stack direction='column' gap='8px' marginTop='40px'>
 				<Typography variant='h5' fontWeight='600'>
 					Характеристики
 				</Typography>
@@ -115,13 +117,26 @@ const ProductCard: FC<IProductCardProps> = ({ product }) => {
 						{`${newPrice}₽ за ${product.wight}`}
 					</Typography>
 				</Stack>
+			</Stack>
 
-				<Stack direction='row' gap='8px'>
-					<Typography variant='body1'>Польза</Typography>
-					<Typography variant='body1'>
-						Большое содержание аминокислот и микроэлементов оказывает
-						положительное воздействие на общий обмен веществ собаки.
-					</Typography>
+			<Stack direction='column' gap='8px' margin='40px 0'>
+				<Typography variant='h5' fontWeight='600'>
+					Отзывы
+				</Typography>
+
+				<Link to={`/add-review/${product._id}`}>
+					<OutlinedBtn
+						text='Написать отзыв'
+						href='#'
+						btnSize='large'
+						mt='20px'
+					/>
+				</Link>
+
+				<Stack direction='column' gap='16px' marginTop='20px'>
+					{product.reviews?.map((review, index) => (
+						<ProductReview review={review} key={index} />
+					))}
 				</Stack>
 			</Stack>
 		</>

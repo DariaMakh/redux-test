@@ -80,12 +80,12 @@ export class Api {
 		}).then(this.onResponse<Review[]>);
 	}
 
-	postReviewById(id: string, review: Review) {
+	postReviewById(id: string, review: any) {
 		return fetch(this.getApiUrl(`/products/review/${id}`), {
 			method: 'POST',
 			headers: this.headers,
 			body: JSON.stringify(review),
-		}).then(this.onResponse<Product[]>);
+		}).then(this.onResponse<Product>);
 	}
 }
 

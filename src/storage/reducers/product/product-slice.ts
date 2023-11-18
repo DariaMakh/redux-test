@@ -4,13 +4,13 @@ import { createAppAsyncThunk } from '../../hooks';
 
 type TProductState = {
 	loading: boolean;
-	product: Product | null;
+	product: Product | [];
 	error: SerializedError | null | unknown;
 };
 
 const initialState: TProductState = {
 	loading: false,
-	product: null,
+	product: [],
 	error: null,
 };
 export const sliceName = 'product';
@@ -26,9 +26,22 @@ export const fetchProduct = createAppAsyncThunk<Product, string>(
 		}
 	}
 );
+
+// export const fetchProductReviews = createAppAsyncThunk<Product, string>(
+// 	`${sliceName}/fetchProduct`,
+// 	async function (id, { fulfillWithValue, rejectWithValue, extra: api }) {
+// 		try {
+// 			const data = await api.getReviewsById(id);
+// 			return fulfillWithValue(data);
+// 		} catch (err) {
+// 			return rejectWithValue(err);
+// 		}
+// 	}
+// );
+
 export const fetchCreateReview = createAppAsyncThunk<
 	Product,
-	{ productId: string; data: any }
+	{ productId: string; data: { text: string } }
 >(
 	`${sliceName}/fetchCreateReview`,
 	async function (
@@ -58,6 +71,10 @@ export const productSlice = createSlice({
 				state.product = action.payload;
 				state.loading = false;
 			})
+			// .addCase(fetchProductReviews.fulfilled, (state, action) => {
+			// 	state.product = action.payload;
+			// 	state.loading = false;
+			// })
 			.addMatcher(isActionPending(`${sliceName}/`), (state) => {
 				state.loading = true;
 				state.error = null;
@@ -65,7 +82,7 @@ export const productSlice = createSlice({
 			.addMatcher(isActionRejected(`${sliceName}/`), (state, action) => {
 				state.loading = false;
 				state.error = action.payload;
-				state.product = null;
+				state.product = [];
 			});
 	},
 });

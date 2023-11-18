@@ -1,14 +1,17 @@
 import { IconButton } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import api from '../../api/api';
 import ProductCard from '../../components/ProductCard';
 import Spinner from '../../components/Spinner';
+import { useAppDispatch, useAppSelector } from '../../storage/hooks';
+import { selectProduct } from '../../storage/reducers/product/selectors';
+import { fetchProduct } from '../../storage/reducers/product/product-slice';
 
 const CardPage = () => {
-	const [product, setProduct] = useState<Product | null>(null);
-	const [loading, setLoadingStatus] = useState<boolean>(true);
+	const dispatch = useAppDispatch();
+
+	const { loading, product } = useAppSelector(selectProduct);
 
 	const { productId } = useParams();
 	const location = useLocation();
@@ -23,18 +26,10 @@ const CardPage = () => {
 	};
 
 	useEffect(() => {
-		if (productId) {
-			api
-				.getProductById(productId)
-				.then((res) => {
-					setProduct(res);
-					setLoadingStatus(false);
-				})
-				.catch(() => {
-					setLoadingStatus(true);
-				});
+		if (!!productId) {
+			dispatch(fetchProduct(productId));
 		}
-	}, [productId]);
+	}, [dispatch, productId]);
 
 	if (loading) {
 		return <Spinner />;
@@ -52,13 +47,7 @@ const CardPage = () => {
 				onClick={onClickBackBtn}>
 				<ArrowBackIosIcon sx={{ fontSize: '14px' }} /> Назад
 			</IconButton>
-			<ProductCard
-				key={productId || ''}
-				product={product as Product}
-				onAddToCart={() => {
-					return null;
-				}}
-			/>
+			<ProductCard key={productId || ''} product={product as Product} />
 		</>
 	);
 };

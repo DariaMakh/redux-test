@@ -5,6 +5,7 @@ import ErrorContent from '../components/ErrorContent';
 import Favorites from '../pages/Favorites';
 import Card from '../pages/Card';
 import EditUser from '../pages/EditUser';
+import AddReview from '../pages/AddReview';
 
 const Router = () => {
 	return (
@@ -14,6 +15,7 @@ const Router = () => {
 			<Route path='/edit-user' element={<EditUser />} />
 			<Route path='/favorites' element={<Favorites />} />
 			<Route path='/catalog/:productId' element={<Card />} />
+			<Route path='/add-review/:productId' element={<AddReview />} />
 			<Route path='*' element={<ErrorContent title='Страница не найдена' />} />
 		</Routes>
 	);
