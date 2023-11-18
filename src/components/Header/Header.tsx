@@ -6,7 +6,6 @@ import FavoritesIcon from '../FavoritesIcon';
 import CartIcon from '../CartIcon';
 import ProfileIcon from '../ProfileIcon';
 import s from './Header.module.css';
-import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {

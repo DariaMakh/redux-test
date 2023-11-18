@@ -1,5 +1,5 @@
 import { Input } from '@mui/material';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { ReactComponent as Icon } from '../../assets/images/search.svg';
 
 import s from './Search.module.css';
