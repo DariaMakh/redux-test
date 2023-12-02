@@ -21,7 +21,7 @@ const Header = () => {
 						<Link to='/'>
 							<Logo />
 						</Link>
-						<Search />
+						{accessToken && <Search />}
 						<div className={s.flex}>
 							<Box
 								sx={{

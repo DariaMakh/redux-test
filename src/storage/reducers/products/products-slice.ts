@@ -127,8 +127,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // export const productsReducer = productsListSlice.reducer;
 
-const initialState: ProductsList = {
+interface ProductsState {
+	products: Product[];
+	searchValue: string;
+}
+
+const initialState: ProductsState = {
 	products: [],
+	searchValue: '',
 };
 
 export const sliceName = 'products';
@@ -137,11 +143,14 @@ export const productsSlice = createSlice({
 	name: sliceName,
 	initialState,
 	reducers: {
-		setProducts(_, action: PayloadAction<ProductsList>) {
-			return action.payload;
+		setProducts(state, action: PayloadAction<ProductsList>) {
+			state.products = action.payload.products;
+		},
+		setSearchValue(state, action: PayloadAction<string>) {
+			state.searchValue = action.payload;
 		},
 	},
 });
 
-export const { setProducts } = productsSlice.actions;
+export const { setProducts, setSearchValue } = productsSlice.actions;
 export const productsReducer = productsSlice.reducer;

@@ -9,7 +9,6 @@ import OutlinedBtn from '../OutlinedBtn';
 import { Link } from 'react-router-dom';
 
 type IProductCardProps = {
-	key: string;
 	product: Product;
 };
 

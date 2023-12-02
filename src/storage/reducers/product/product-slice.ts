@@ -13,8 +13,8 @@ export const productSlice = createSlice({
 	name: sliceName,
 	initialState,
 	reducers: {
-		setSingleProduct(_, action: PayloadAction<Product>) {
-			return action.payload;
+		setSingleProduct(state, action: PayloadAction<Product>) {
+			state.product = action.payload;
 		},
 	},
 });

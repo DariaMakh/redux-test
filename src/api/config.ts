@@ -20,7 +20,6 @@ export const config = {
 
 export const customBaseQuery = fetchBaseQuery({
 	baseUrl: 'https://api.react-learning.ru',
-	// baseUrl: process.env.API_URL,
 	prepareHeaders: (headers, { getState }) => {
 		const accessToken = (getState() as RootState).auth.accessToken;
 
@@ -28,7 +27,5 @@ export const customBaseQuery = fetchBaseQuery({
 			headers.set('authorization', `Bearer ${accessToken}`);
 		}
 		return headers;
-
-		// headers.set('authorization', `Bearer ${token}`);
 	},
 });
