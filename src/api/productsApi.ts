@@ -6,12 +6,6 @@ export const productsApi = createApi({
 	baseQuery: customBaseQuery,
 	tagTypes: ['Products'],
 	endpoints: (builder) => ({
-		getProducts: builder.query<Product[], void>({
-			query: () => ({
-				url: 'products',
-			}),
-			providesTags: ['Products'],
-		}),
 		getSearchProducts: builder.query<Product[], string>({
 			query: (search) => ({
 				url: `products/search?query=${search}`,
@@ -21,7 +15,15 @@ export const productsApi = createApi({
 			query: (productId) => ({
 				url: `products/${productId}`,
 			}),
-			// providesTags: (productId) => [{ type: 'Products', id: productId }],
+		}),
+		changeFavoriteProduct: builder.mutation<
+			Product,
+			{ id: string; like: boolean }
+		>({
+			query: ({ id, like }) => ({
+				url: `products/likes/${id}`,
+				method: like ? 'DELETE' : 'PUT',
+			}),
 		}),
 		createProduct: builder.mutation<
 			Product,
@@ -59,9 +61,9 @@ export const productsApi = createApi({
 });
 
 export const {
-	useGetProductsQuery,
 	useGetSearchProductsQuery,
 	useGetProductByIDQuery,
 	useCreateProductMutation,
 	useCreateProductReviewMutation,
+	useChangeFavoriteProductMutation,
 } = productsApi;

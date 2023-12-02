@@ -1,4 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { isLiked } from '../../../utils/products';
+import { useAppSelector } from '../../hooks';
+import { selectUser } from '../user/selectors';
 //
 // type TProductState = {
 // 	loading: boolean;
@@ -129,11 +132,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ProductsState {
 	products: Product[];
+	favoriteProducts: Product[];
 	searchValue: string;
 }
 
 const initialState: ProductsState = {
 	products: [],
+	favoriteProducts: [],
 	searchValue: '',
 };
 
@@ -143,12 +148,23 @@ export const productsSlice = createSlice({
 	name: sliceName,
 	initialState,
 	reducers: {
-		setProducts(state, action: PayloadAction<ProductsList>) {
-			state.products = action.payload.products;
+		setProducts(state, action: PayloadAction<Product[]>) {
+			state.products = action.payload;
 		},
 		setSearchValue(state, action: PayloadAction<string>) {
 			state.searchValue = action.payload;
 		},
+		// changeFavoriteProduct(state, action: PayloadAction<Product>) {
+		// 	const product = action.payload;
+		// 	const liked = user ? isLiked(product.likes, user.id) : false;
+		// 	if (!liked) {
+		// 		state.favoriteProducts.push(product);
+		// 	} else {
+		// 		state.favoriteProducts = state.favoriteProducts.filter(
+		// 			(productState) => productState._id !== product._id
+		// 		);
+		// 	}
+		// },
 	},
 });
 

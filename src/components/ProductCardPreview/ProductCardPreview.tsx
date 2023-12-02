@@ -14,6 +14,10 @@ import s from './ProductCardPreview.module.css';
 import { isLiked } from '../../utils/products';
 import { selectUser } from '../../storage/reducers/user/selectors';
 import { useAppDispatch, useAppSelector } from '../../storage/hooks';
+import { toast } from 'react-toastify';
+import { getMessageFromError } from '../../utils/error';
+import { useChangeFavoriteProductMutation } from '../../api/productsApi';
+import { setSingleProduct } from '../../storage/reducers/product/product-slice';
 
 type IProductCardPreviewProps = {
 	key: number;
@@ -30,10 +34,11 @@ const ProductCardPreview: FC<IProductCardPreviewProps> = ({
 }: IProductCardPreviewProps) => {
 	const currentUser = useAppSelector(selectUser);
 	const dispatch = useAppDispatch();
+	const [changeFavoriteProduct] = useChangeFavoriteProductMutation();
 
-	// const like = useMemo(() => {
-	// 	return isLiked(likes, (currentUser as User).id);
-	// }, [likes, currentUser]);
+	const like = useMemo(() => {
+		return isLiked(likes, (currentUser as User).id);
+	}, [likes, currentUser]);
 
 	const newPrice = useMemo(() => {
 		return discount !== 0 ? price - discount : price;
@@ -44,9 +49,19 @@ const ProductCardPreview: FC<IProductCardPreviewProps> = ({
 	}, [discount]);
 	const location = useLocation();
 
-	// const onClickLike = () => {
-	// 	dispatch(fetchChangeFavoriteProduct({ likes, _id }));
-	// };
+	const onClickLike = async () => {
+		try {
+			await changeFavoriteProduct({
+				id: _id,
+				like,
+			});
+			// dispatch(changeFavoriteProduct(response));
+		} catch (error) {
+			toast.error(
+				getMessageFromError(error, 'Неизвестная ошибка при поиске товара')
+			);
+		}
+	};
 
 	return (
 		<Card className={s.cardWidth} sx={{ boxShadow: 'none' }}>
@@ -54,10 +69,10 @@ const ProductCardPreview: FC<IProductCardPreviewProps> = ({
 				<CardMedia component='img' alt={name} height='auto' image={pictures} />
 			</Link>
 			<div className={s.icon}>
-				{/*<FavoritesIcon*/}
-				{/*	iconColor={like ? 'red' : 'grey'}*/}
-				{/*	onClick={onClickLike}*/}
-				{/*/>*/}
+				<FavoritesIcon
+					iconColor={like ? 'red' : 'grey'}
+					onClick={onClickLike}
+				/>
 			</div>
 			<CardContent sx={{ marginTop: '16', lineHeight: '100%' }}>
 				<Stack direction='row' gap='8px'>

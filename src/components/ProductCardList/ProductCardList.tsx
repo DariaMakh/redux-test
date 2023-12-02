@@ -1,9 +1,11 @@
 import { Pagination, Stack, Typography } from '@mui/material';
-import { ChangeEvent, FC, useMemo } from 'react';
+import { ChangeEvent, FC, useEffect, useMemo } from 'react';
 import usePagination from '../../hooks/usePagination';
 import { PER_PAGE } from '../../utils/constants';
 import ProductCardPreview from '../ProductCardPreview';
 import Sort from '../Sort';
+import { useAppDispatch } from '../../storage/hooks';
+import { setProducts } from '../../storage/reducers/products/products-slice';
 
 interface IProps {
 	products: Product[];
@@ -12,6 +14,10 @@ interface IProps {
 const ProductCardList: FC<IProps> = ({ products }) => {
 	const { currentPage, getCurrentData, countPage, setPagePaginate } =
 		usePagination<Product>(products, PER_PAGE);
+	const dispatch = useAppDispatch();
+	useEffect(() => {
+		dispatch(setProducts(products));
+	}, [dispatch, products]);
 
 	const onChangePage = (e: ChangeEvent<unknown>, page: number) => {
 		setPagePaginate(page);
