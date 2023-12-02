@@ -1,14 +1,26 @@
 import PageTittle from '../../components/Title';
 import OutlinedBtn from '../../components/OutlinedBtn';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { List, ListItem, ListItemText, Stack, Typography } from '@mui/material';
 import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined';
 import MailOutlinedIcon from '@mui/icons-material/MailOutlined';
-import { useAppSelector } from '../../storage/hooks';
+import { useAppDispatch, useAppSelector } from '../../storage/hooks';
 import { selectUser } from '../../storage/reducers/user/selectors';
 import s from './Profile.module.css';
+import { clearTokens } from '../../storage/reducers/auth/auth-slice';
+import { batch } from 'react-redux';
+import { clearUser } from '../../storage/reducers/user/user-slice';
 const Profile = () => {
 	const user = useAppSelector(selectUser) as User;
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+	const onClickLogOut = () => {
+		batch(() => {
+			dispatch(clearTokens());
+			dispatch(clearUser());
+		});
+		navigate('/');
+	};
 
 	return (
 		<Stack sx={{ marginTop: '20px' }}>
@@ -37,9 +49,7 @@ const Profile = () => {
 				<OutlinedBtn text='Изменить' href='#' btnSize='large' mt='20px' />
 			</Link>
 
-			<Link to='/'>
-				<OutlinedBtn href='#' text='Выйти' mt='40px' />
-			</Link>
+			<OutlinedBtn href='#' text='Выйти' mt='40px' onClick={onClickLogOut} />
 		</Stack>
 	);
 };

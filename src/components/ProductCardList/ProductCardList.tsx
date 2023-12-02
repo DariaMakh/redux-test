@@ -1,15 +1,15 @@
 import { Pagination, Stack, Typography } from '@mui/material';
-import { ChangeEvent, useMemo } from 'react';
+import { ChangeEvent, FC, useMemo } from 'react';
 import usePagination from '../../hooks/usePagination';
 import { PER_PAGE } from '../../utils/constants';
 import ProductCardPreview from '../ProductCardPreview';
-import { useAppSelector } from '../../storage/hooks';
-import { selectProducts } from '../../storage/reducers/products/selectors';
 import Sort from '../Sort';
 
-const ProductCardList = () => {
-	const { products } = useAppSelector(selectProducts);
+interface IProps {
+	products: Product[];
+}
 
+const ProductCardList: FC<IProps> = ({ products }) => {
 	const { currentPage, getCurrentData, countPage, setPagePaginate } =
 		usePagination<Product>(products, PER_PAGE);
 

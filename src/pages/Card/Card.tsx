@@ -1,21 +1,30 @@
 import { IconButton } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import ProductCard from '../../components/ProductCard';
 import Spinner from '../../components/Spinner';
 import { useAppDispatch, useAppSelector } from '../../storage/hooks';
 import { selectProduct } from '../../storage/reducers/product/selectors';
-import { fetchProduct } from '../../storage/reducers/product/product-slice';
+import { batch } from 'react-redux';
+import { setSingleProduct } from '../../storage/reducers/product/product-slice';
+import { toast } from 'react-toastify';
+import { getMessageFromError } from '../../utils/error';
+import { useGetProductByIDMutation } from '../../api/productsApi';
 
 const CardPage = () => {
 	const dispatch = useAppDispatch();
 
-	const { loading, product } = useAppSelector(selectProduct);
+	const { product } = useAppSelector(selectProduct);
+	const [getProductById, { isLoading }] = useGetProductByIDMutation();
 
 	const { productId } = useParams();
 	const location = useLocation();
 	const navigate = useNavigate();
+
+	const ID = useMemo(() => {
+		return productId || '';
+	}, [productId]);
 
 	const onClickBackBtn = () => {
 		if (location && location.state?.location?.path) {
@@ -25,13 +34,24 @@ const CardPage = () => {
 		}
 	};
 
-	useEffect(() => {
-		if (!!productId) {
-			dispatch(fetchProduct(productId));
+	const getInitialProduct = async () => {
+		try {
+			const response = await getProductById({ productId: ID });
+			batch(() => {
+				dispatch(setSingleProduct(response));
+			});
+		} catch (error) {
+			toast.error(
+				getMessageFromError(error, 'Неизвестная ошибка при поиске товара')
+			);
 		}
-	}, [dispatch, productId]);
+	};
 
-	if (loading) {
+	useEffect(() => {
+		getInitialProduct();
+	}, [dispatch, getProductById, productId]);
+
+	if (isLoading) {
 		return <Spinner />;
 	}
 

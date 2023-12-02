@@ -19,14 +19,15 @@ declare global {
 		author: User;
 		reviews: Review[];
 	}
+
 	interface User {
-		_id: string;
+		id: string;
 		name: string;
 		about: string;
 		avatar: string;
+		isAdmin: boolean;
 		email: string;
-		__v?: number;
-		group?: string;
+		group: string;
 	}
 
 	type ProductLikeParam = {
@@ -41,5 +42,25 @@ declare global {
 		product?: Product;
 		updated_at?: string;
 		created_at?: string;
+	}
+
+	interface Tokens {
+		accessToken: string;
+		refreshToken: string;
+	}
+
+	interface SignUpFormValues {
+		email: string;
+		group: string;
+		password: string;
+	}
+
+	interface SignInFormValues {
+		email: string;
+		password: string;
+	}
+	interface SignInFormValues {
+		email: string;
+		password: string;
 	}
 }

@@ -7,14 +7,20 @@ import CartIcon from '../CartIcon';
 import ProfileIcon from '../ProfileIcon';
 import s from './Header.module.css';
 import { Link } from 'react-router-dom';
+import { accessTokenSelector } from '../../storage/reducers/auth/selectors';
+import { useAppSelector } from '../../storage/hooks';
 
 const Header = () => {
+	const accessToken = useAppSelector(accessTokenSelector);
+
 	return (
 		<Box className={s.wrap}>
 			<AppBar position='static' className={s.appBar}>
 				<Container maxWidth='lg' style={{ padding: 0 }}>
 					<Toolbar className={s.flex}>
-						<Logo />
+						<Link to='/'>
+							<Logo />
+						</Link>
 						<Search />
 						<div className={s.flex}>
 							<Box
@@ -22,11 +28,17 @@ const Header = () => {
 									display: { xs: 'none', md: 'flex' },
 									alignItems: 'center',
 								}}>
-								<Link to='/favorites'>
-									<FavoritesIcon />
-								</Link>
-								<CartIcon />
-								<ProfileIcon />
+								{accessToken && (
+									<>
+										<Link to='/favorites'>
+											<FavoritesIcon />
+										</Link>
+										<CartIcon />
+										<ProfileIcon />
+									</>
+								)}
+
+								{!accessToken && <Link to='/sign-up'>Зарегистрироваться</Link>}
 							</Box>
 						</div>
 					</Toolbar>

@@ -5,6 +5,7 @@ import {
 	Typography,
 	CardActions,
 	Button,
+	Stack,
 } from '@mui/material';
 import { FC, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
@@ -13,7 +14,6 @@ import s from './ProductCardPreview.module.css';
 import { isLiked } from '../../utils/products';
 import { selectUser } from '../../storage/reducers/user/selectors';
 import { useAppDispatch, useAppSelector } from '../../storage/hooks';
-import { fetchChangeFavoriteProduct } from '../../storage/reducers/products/products-slice';
 
 type IProductCardPreviewProps = {
 	key: number;
@@ -30,7 +30,11 @@ const ProductCardPreview: FC<IProductCardPreviewProps> = ({
 }: IProductCardPreviewProps) => {
 	const currentUser = useAppSelector(selectUser);
 	const dispatch = useAppDispatch();
-	const like = isLiked(likes, (currentUser as User)._id);
+
+	// const like = useMemo(() => {
+	// 	return isLiked(likes, (currentUser as User).id);
+	// }, [likes, currentUser]);
+
 	const newPrice = useMemo(() => {
 		return discount !== 0 ? price - discount : price;
 	}, [discount, price]);
@@ -40,9 +44,9 @@ const ProductCardPreview: FC<IProductCardPreviewProps> = ({
 	}, [discount]);
 	const location = useLocation();
 
-	const onClickLike = () => {
-		dispatch(fetchChangeFavoriteProduct({ likes, _id }));
-	};
+	// const onClickLike = () => {
+	// 	dispatch(fetchChangeFavoriteProduct({ likes, _id }));
+	// };
 
 	return (
 		<Card className={s.cardWidth} sx={{ boxShadow: 'none' }}>
@@ -50,23 +54,26 @@ const ProductCardPreview: FC<IProductCardPreviewProps> = ({
 				<CardMedia component='img' alt={name} height='auto' image={pictures} />
 			</Link>
 			<div className={s.icon}>
-				<FavoritesIcon
-					iconColor={like ? 'red' : 'grey'}
-					onClick={onClickLike}
-				/>
+				{/*<FavoritesIcon*/}
+				{/*	iconColor={like ? 'red' : 'grey'}*/}
+				{/*	onClick={onClickLike}*/}
+				{/*/>*/}
 			</div>
 			<CardContent sx={{ marginTop: '16', lineHeight: '100%' }}>
-				{discount !== 0 && (
-					<Typography variant='subtitle2' className={s.discount}>
-						{price}
+				<Stack direction='row' gap='8px'>
+					<Typography
+						variant='h6'
+						sx={{ fontWeight: '20', marginTop: '0', lineHeight: '100%' }}
+						className={isDiscount ? s.red : ''}>
+						{newPrice}
 					</Typography>
-				)}
-				<Typography
-					variant='h6'
-					sx={{ fontWeight: '20', marginTop: '0', lineHeight: '100%' }}
-					className={isDiscount ? s.red : ''}>
-					{newPrice}
-				</Typography>
+					{discount !== 0 && (
+						<Typography variant='subtitle2' className={s.discount}>
+							{price}
+						</Typography>
+					)}
+				</Stack>
+
 				<Typography variant='subtitle1' className={s.productWidth}>
 					{wight}
 				</Typography>

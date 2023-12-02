@@ -18,7 +18,7 @@ const Favorites = () => {
 
 	useEffect(() => {
 		const favorites = products.filter((item) =>
-			item.likes.find((like) => like === user._id)
+			item.likes.find((like) => like === user.id)
 		);
 		setFavoritesProducts(favorites);
 		setLoadingFavorites(false);

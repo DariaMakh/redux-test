@@ -1,3 +1,6 @@
+import { fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
+import { RootState } from '../storage/types';
+
 export const config = {
 	data: {
 		name: 'Махортова Дарья',
@@ -14,3 +17,18 @@ export const config = {
 	apiToken:
 		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDhjYmYwMWUwYmYyYzUxOWJlZmI1ZjgiLCJncm91cCI6Imdyb3VwLTExIiwiaWF0IjoxNjg2OTQ1NTUyLCJleHAiOjE3MTg0ODE1NTJ9.q-LqM1-2zoShDvCde1DU05URZ-AjnIdAkYZg3SzmDhc',
 };
+
+export const customBaseQuery = fetchBaseQuery({
+	baseUrl: 'https://api.react-learning.ru',
+	// baseUrl: process.env.API_URL,
+	prepareHeaders: (headers, { getState }) => {
+		const accessToken = (getState() as RootState).auth.accessToken;
+
+		if (accessToken) {
+			headers.set('authorization', `Bearer ${accessToken}`);
+		}
+		return headers;
+
+		// headers.set('authorization', `Bearer ${token}`);
+	},
+});

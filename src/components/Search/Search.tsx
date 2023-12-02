@@ -1,20 +1,30 @@
 import { Input } from '@mui/material';
 import { useState } from 'react';
 import { ReactComponent as Icon } from '../../assets/images/search.svg';
-
-import s from './Search.module.css';
 import { useAppDispatch } from '../../storage/hooks';
-import { fetchSearchProducts } from '../../storage/reducers/products/products-slice';
+import { setProducts } from '../../storage/reducers/products/products-slice';
+import { useGetSearchProductsMutation } from '../../api/productsApi';
+import { toast } from 'react-toastify';
+import { getMessageFromError } from '../../utils/error';
+import s from './Search.module.css';
 
 const Search = () => {
 	const [searchValue, setSearchValue] = useState<string>('');
-
+	const [searchProducts] = useGetSearchProductsMutation();
 	const dispatch = useAppDispatch();
 
-	const onChangeSearch = (search: string) => {
+	const onChangeSearch = async (search: string) => {
 		setSearchValue(search);
-		dispatch(fetchSearchProducts(search));
+		try {
+			const response = await searchProducts({ search });
+			dispatch(setProducts(response));
+		} catch (error) {
+			toast.error(
+				getMessageFromError(error, 'Неизвестная ошибка при поиске товара')
+			);
+		}
 	};
+
 	return (
 		<div className={s.search}>
 			<Input

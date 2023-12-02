@@ -4,6 +4,8 @@ import { ReactComponent as IconRed } from '../../assets/images/favorites-red.svg
 
 import { IconButton } from '@mui/material';
 import { FC } from 'react';
+import { useAppSelector } from '../../storage/hooks';
+import { selectUser } from '../../storage/reducers/user/selectors';
 
 interface IFavoritesIconProps {
 	iconColor?: 'grey' | 'black' | 'red';
@@ -14,6 +16,8 @@ const FavoritesIcon: FC<IFavoritesIconProps> = ({
 	iconColor = 'black',
 	onClick,
 }) => {
+	const currentUser = useAppSelector(selectUser);
+
 	return (
 		<IconButton
 			size='large'

@@ -1,5 +1,4 @@
 import { RootState } from '../../types';
-import { productsListSlice } from './products-slice';
+import { productsSlice } from './products-slice';
 
-export const selectProducts = (state: RootState) =>
-	state[productsListSlice.name];
+export const selectProducts = (state: RootState) => state[productsSlice.name];

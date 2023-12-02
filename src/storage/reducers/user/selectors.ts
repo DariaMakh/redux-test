@@ -1,6 +1,4 @@
 import { RootState } from '../../types';
 import { userSlice } from './user-slice';
 
-export const selectUser = (state: RootState) => state[userSlice.name].data;
-export const selectUserLoading = (state: RootState) =>
-	state[userSlice.name].loading;
+export const selectUser = (state: RootState) => state[userSlice.name];

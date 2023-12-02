@@ -6,8 +6,6 @@ type TConfigApi = {
 	groupId: string;
 };
 
-export type UserEditBodyDto = Pick<User, 'name' | 'about'>;
-
 export class Api {
 	private baseUrl;
 	private headers;
@@ -25,20 +23,6 @@ export class Api {
 
 	private getApiUrl(path: string) {
 		return `${this.baseUrl}${path}`;
-	}
-
-	getUserInfo() {
-		return fetch(this.getApiUrl('/users/me'), { headers: this.headers }).then(
-			this.onResponse<User>
-		);
-	}
-
-	setUserInfo(userData: UserEditBodyDto) {
-		return fetch(this.getApiUrl('/users/me/'), {
-			method: 'PATCH',
-			headers: this.headers,
-			body: JSON.stringify(userData),
-		}).then(this.onResponse<User>);
 	}
 
 	search(searchQuery: string) {
@@ -71,13 +55,6 @@ export class Api {
 			method: 'DELETE',
 			headers: this.headers,
 		}).then(this.onResponse<Product>);
-	}
-
-	getReviewsById(id: string) {
-		return fetch(this.getApiUrl(`/products/review/${id}`), {
-			method: 'GET',
-			headers: this.headers,
-		}).then(this.onResponse<Review[]>);
 	}
 
 	postReviewById(id: string, review: { text: string }) {
