@@ -1,7 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: Product | object = {
-	product: {},
+type TProductState = {
+	product: Product | [];
+};
+
+const initialState: TProductState = {
+	product: [],
 };
 export const sliceName = 'product';
 
