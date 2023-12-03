@@ -13,7 +13,7 @@ export const withProtection = <T extends object>(
 		if (!accessToken) {
 			return (
 				<Navigate
-					to='/signin'
+					to='/sign-in'
 					state={{
 						from: location.pathname,
 					}}
