@@ -10,11 +10,13 @@ export const productsApi = createApi({
 			query: (search) => ({
 				url: `products/search?query=${search}`,
 			}),
+			providesTags: ['Products'],
 		}),
 		getProductByID: builder.query<Product, string>({
 			query: (productId) => ({
 				url: `products/${productId}`,
 			}),
+			providesTags: (result) => [{ type: 'Products', id: `${result?._id}` }],
 		}),
 		changeFavoriteProduct: builder.mutation<
 			Product,
@@ -24,6 +26,7 @@ export const productsApi = createApi({
 				url: `products/likes/${id}`,
 				method: like ? 'DELETE' : 'PUT',
 			}),
+			invalidatesTags: () => [{ type: 'Products' }],
 		}),
 		createProduct: builder.mutation<
 			Product,

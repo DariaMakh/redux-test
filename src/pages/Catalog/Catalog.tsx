@@ -1,16 +1,16 @@
-import LocalBreadcrumbs from '../../components/Breadcrumbs';
-import ProductCardList from '../../components/ProductCardList';
-import PageTittle from '../../components/Title';
-import s from './Catalog.module.css';
-import { useAppSelector } from '../../storage/hooks';
-import { selectProducts } from '../../storage/reducers/products/selectors';
 import { useGetSearchProductsQuery } from '../../api/productsApi';
 import { FC } from 'react';
-import { withProtection } from '../../HOCs/withProtection';
-import { withQuery } from '../../HOCs/withQuery';
-import { getMessageFromError } from '../../utils/error';
+import { useAppSelector } from '../../app/store/hooks';
+import { selectProducts } from '../../app/store/reducers/products/selectors';
+import { withProtection } from '../../shared/HOCs/withProtection';
+import { withQuery } from '../../shared/HOCs/withQuery';
+import { LocalBreadcrumbs } from '../../shared/components/Breadcrumbs';
+import { ProductCardList } from '../../shared/components/ProductCardList';
+import { PageTittle } from '../../shared/components/Title';
+import { getMessageFromError } from '../../shared/utils/error';
+import s from './Catalog.module.css';
 
-const Catalog: FC = withProtection(() => {
+export const Catalog: FC = withProtection(() => {
 	const { searchValue } = useAppSelector(selectProducts);
 
 	const {
@@ -35,5 +35,3 @@ const Catalog: FC = withProtection(() => {
 		</div>
 	);
 });
-
-export default Catalog;

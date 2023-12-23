@@ -1,11 +1,13 @@
 import { OutlinedInput, Stack } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../storage/hooks';
-import { selectUser } from '../../storage/reducers/user/selectors';
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import OutlinedBtn from '../../components/OutlinedBtn';
-import PageTittle from '../../components/Title';
-const EditUser = () => {
+import { useAppSelector } from '../../app/store/hooks';
+import { selectUser } from '../../app/store/reducers/user/selectors';
+import { withProtection } from '../../shared/HOCs/withProtection';
+import OutlinedBtn from '../../shared/components/OutlinedBtn';
+import { PageTittle } from '../../shared/components/Title';
+
+export const EditUser = withProtection(() => {
 	const navigate = useNavigate();
 
 	const user = useAppSelector(selectUser) as User;
@@ -44,6 +46,4 @@ const EditUser = () => {
 			/>
 		</Stack>
 	);
-};
-
-export default EditUser;
+});

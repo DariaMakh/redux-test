@@ -1,11 +1,12 @@
 import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetProductByIDQuery } from '../../api/productsApi';
-import { getMessageFromError } from '../../utils/error';
-import { withQuery } from '../../HOCs/withQuery';
-import { AddReviewForm } from '../../components/forms/AddReviewForm/AddReviewForm';
+import { withProtection } from '../../shared/HOCs/withProtection';
+import { withQuery } from '../../shared/HOCs/withQuery';
+import { getMessageFromError } from '../../shared/utils/error';
+import { ReviewForm } from '../../features/ReviewForm';
 
-const AddReview: FC = () => {
+export const AddReview: FC = withProtection(() => {
 	const { productId } = useParams();
 	const ID = useMemo(() => {
 		return productId || '';
@@ -21,7 +22,7 @@ const AddReview: FC = () => {
 
 	return (
 		<>
-			{withQuery(AddReviewForm)({
+			{withQuery(ReviewForm)({
 				isError,
 				isLoading,
 				error: getMessageFromError(error, 'Неизвестная ошибка'),
@@ -30,6 +31,4 @@ const AddReview: FC = () => {
 			})}
 		</>
 	);
-};
-
-export default AddReview;
+});

@@ -1,24 +1,23 @@
-import PageTittle from '../../components/Title';
-import OutlinedBtn from '../../components/OutlinedBtn';
 import { Link, useNavigate } from 'react-router-dom';
 import { List, ListItem, ListItemText, Stack, Typography } from '@mui/material';
 import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined';
 import MailOutlinedIcon from '@mui/icons-material/MailOutlined';
-import { useAppDispatch, useAppSelector } from '../../storage/hooks';
-import { selectUser } from '../../storage/reducers/user/selectors';
+import { useAppSelector, useAppDispatch } from '../../app/store/hooks';
+import { clearTokens } from '../../app/store/reducers/auth/auth-slice';
+import { selectUser } from '../../app/store/reducers/user/selectors';
+import { clearUser } from '../../app/store/reducers/user/user-slice';
+import { withProtection } from '../../shared/HOCs/withProtection';
+import OutlinedBtn from '../../shared/components/OutlinedBtn';
+import { PageTittle } from '../../shared/components/Title';
 import s from './Profile.module.css';
-import { clearTokens } from '../../storage/reducers/auth/auth-slice';
-import { batch } from 'react-redux';
-import { clearUser } from '../../storage/reducers/user/user-slice';
-const Profile = () => {
+
+export const Profile = withProtection(() => {
 	const user = useAppSelector(selectUser) as User;
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const onClickLogOut = () => {
-		batch(() => {
-			dispatch(clearTokens());
-			dispatch(clearUser());
-		});
+		dispatch(clearTokens());
+		dispatch(clearUser());
 		navigate('/');
 	};
 
@@ -52,6 +51,4 @@ const Profile = () => {
 			<OutlinedBtn href='#' text='Выйти' mt='40px' onClick={onClickLogOut} />
 		</Stack>
 	);
-};
-
-export default Profile;
+});

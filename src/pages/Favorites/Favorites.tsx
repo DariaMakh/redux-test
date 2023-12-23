@@ -1,14 +1,17 @@
-import { Stack, Typography } from '@mui/material';
+import { IconButton, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import ErrorContent from '../../components/ErrorContent';
-import ProductCardPreview from '../../components/ProductCardPreview';
-import Spinner from '../../components/Spinner';
-import PageTittle from '../../components/Title';
-import { useAppSelector } from '../../storage/hooks';
-import { selectUser } from '../../storage/reducers/user/selectors';
-import { selectProducts } from '../../storage/reducers/products/selectors';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { Link } from 'react-router-dom';
+import { useAppSelector } from '../../app/store/hooks';
+import { selectProducts } from '../../app/store/reducers/products/selectors';
+import { selectUser } from '../../app/store/reducers/user/selectors';
+import { ProductCardPreview } from '../../entities/ProductCardPreview';
+import { withProtection } from '../../shared/HOCs/withProtection';
+import { Spinner } from '../../shared/components/Spinner';
+import { PageTittle } from '../../shared/components/Title';
+import { ErrorPage } from '../Error';
 
-const Favorites = () => {
+export const Favorites = withProtection(() => {
 	const user = useAppSelector(selectUser) as User;
 	const { products } = useAppSelector(selectProducts);
 	const [loadingFavorites, setLoadingFavorites] = useState<boolean>(true);
@@ -20,6 +23,7 @@ const Favorites = () => {
 		const favorites = products.filter((item) =>
 			item.likes.find((like) => like === user.id)
 		);
+
 		setFavoritesProducts(favorites);
 		setLoadingFavorites(false);
 	}, [products, user]);
@@ -30,9 +34,20 @@ const Favorites = () => {
 
 	return (
 		<>
+			<Link to='/catalog'>
+				<IconButton
+					sx={{
+						textTransform: 'initial',
+						color: '#7B8E98',
+						fontSize: '14px',
+						marginTop: '16px',
+					}}>
+					<ArrowBackIosIcon sx={{ fontSize: '14px' }} /> Каталог
+				</IconButton>
+			</Link>
 			<PageTittle title='Избранное' />
 			{favoritesProducts.length === 0 ? (
-				<ErrorContent
+				<ErrorPage
 					title='В Избранном пока ничего нет'
 					subtitle='Добавляйте товары в Избранное с помощью ❤️️'
 				/>
@@ -47,7 +62,7 @@ const Favorites = () => {
 					gap='40px 16px'>
 					{favoritesProducts.length > 0 &&
 						favoritesProducts.map((item, index) => (
-							<ProductCardPreview key={index} {...item} />
+							<ProductCardPreview key={index} product={item} />
 						))}
 
 					{favoritesProducts.length === 0 && (
@@ -59,6 +74,4 @@ const Favorites = () => {
 			)}
 		</>
 	);
-};
-
-export default Favorites;
+});
