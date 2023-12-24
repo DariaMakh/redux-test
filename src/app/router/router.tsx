@@ -1,18 +1,19 @@
 import { createBrowserRouter } from 'react-router-dom';
+
+import { App } from '../App';
 import {
-	AddReview,
+	AddReviewPage,
 	CardPage,
 	CartPage,
-	Catalog,
-	EditUser,
-	ErrorPage,
-	Favorites,
+	CatalogPage,
+	EditUserPage,
+	FavoritesPage,
 	MainPage,
-	Profile,
-	SignIn,
-	SignUp,
+	ProfilePage,
+	SignInPage,
+	SignUpPage,
+	ErrorPage,
 } from '../../pages';
-import { App } from '../App';
 
 export const router = createBrowserRouter([
 	{
@@ -25,19 +26,19 @@ export const router = createBrowserRouter([
 			},
 			{
 				path: 'catalog',
-				element: <Catalog />,
+				element: <CatalogPage />,
 			},
 			{
 				path: 'profile',
-				element: <Profile />,
+				element: <ProfilePage />,
 			},
 			{
 				path: 'edit-user',
-				element: <EditUser />,
+				element: <EditUserPage />,
 			},
 			{
 				path: 'favorites',
-				element: <Favorites />,
+				element: <FavoritesPage />,
 			},
 			{
 				path: 'cart',
@@ -49,15 +50,15 @@ export const router = createBrowserRouter([
 			},
 			{
 				path: 'add-review/:productId',
-				element: <AddReview />,
+				element: <AddReviewPage />,
 			},
 			{
 				path: 'sign-up',
-				element: <SignUp />,
+				element: <SignUpPage />,
 			},
 			{
 				path: 'sign-in',
-				element: <SignIn />,
+				element: <SignInPage />,
 			},
 			{
 				path: '*',

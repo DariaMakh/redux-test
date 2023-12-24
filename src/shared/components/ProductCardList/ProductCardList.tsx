@@ -5,7 +5,6 @@ import { PER_PAGE } from '../../utils/constants';
 import { setProducts } from '../../../app/store/reducers/products/products-slice';
 import { useAppDispatch } from '../../../app/store/hooks';
 import { ProductCardPreview } from '../../../entities/ProductCardPreview';
-import { Sort } from '../Sort';
 
 interface IProps {
 	products: Product[];
@@ -30,12 +29,6 @@ export const ProductCardList: FC<IProps> = ({ products }) => {
 
 	return (
 		<>
-			{products.length > 0 && (
-				<Stack sx={{ marginTop: '20px' }}>
-					<Sort />
-				</Stack>
-			)}
-
 			<Stack
 				direction='row'
 				spacing={1}

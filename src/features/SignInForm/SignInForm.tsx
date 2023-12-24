@@ -35,8 +35,6 @@ export const SignInForm: FC = () => {
 		try {
 			values.email.toLowerCase();
 			values.password.toLowerCase();
-
-			console.log(values);
 			const response = await signIn(values).unwrap();
 			toast.success('Вы успешно вошли в систему');
 			dispatch(setUser(response.data));

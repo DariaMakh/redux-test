@@ -78,6 +78,7 @@ export const ProductCardPreview: FC<IProductCardPreviewProps> = withProtection(
 
 		const onClickToCart = () => {
 			setAddToCartStatus(!addToCart);
+			console.log('prod ', product);
 			dispatch(setCartStatus(product));
 		};
 

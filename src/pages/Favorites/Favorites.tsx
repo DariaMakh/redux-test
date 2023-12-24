@@ -11,7 +11,7 @@ import { Spinner } from '../../shared/components/Spinner';
 import { PageTittle } from '../../shared/components/Title';
 import { ErrorPage } from '../Error';
 
-export const Favorites = withProtection(() => {
+export const FavoritesPage = withProtection(() => {
 	const user = useAppSelector(selectUser) as User;
 	const { products } = useAppSelector(selectProducts);
 	const [loadingFavorites, setLoadingFavorites] = useState<boolean>(true);

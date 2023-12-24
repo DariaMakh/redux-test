@@ -9,7 +9,6 @@ import { ErrorPage } from '../Error';
 
 export const CartPage: FC = withProtection(() => {
 	const { addedToCart } = useAppSelector(selectProducts);
-	console.log(addedToCart);
 
 	return (
 		<>

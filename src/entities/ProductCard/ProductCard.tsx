@@ -6,8 +6,18 @@ import { Link } from 'react-router-dom';
 import { PageTittle } from '../../shared/components/Title';
 import OutlinedBtn from '../../shared/components/OutlinedBtn';
 import { ProductReview } from '../../shared/components/ProductReview';
-import { IconFavoritesGrey } from '../../shared/components/Icons';
+import {
+	IconFavoritesGrey,
+	IconFavoritesRed,
+} from '../../shared/components/Icons';
 import { withProtection } from '../../shared/HOCs/withProtection';
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks';
+import { selectUser } from '../../app/store/reducers/user/selectors';
+import { isLiked } from '../../shared/utils/products';
+import { toast } from 'react-toastify';
+import { useChangeFavoriteProductMutation } from '../../api/productsApi';
+import { setFavoritesStatus } from '../../app/store/reducers/products/products-slice';
+import { getMessageFromError } from '../../shared/utils/error';
 
 type IProductCardProps = {
 	product: Product;
@@ -15,15 +25,32 @@ type IProductCardProps = {
 
 export const ProductCard: FC<IProductCardProps> = withProtection(
 	({ product }) => {
-		const newPrice = useMemo(() => {
-			return product.discount !== 0
-				? product.price - product.discount
-				: product.price;
-		}, [product.discount, product.price]);
+		const currentUser = useAppSelector(selectUser);
+		const dispatch = useAppDispatch();
+		const [changeFavoriteProduct] = useChangeFavoriteProductMutation();
 
-		const isDiscount = useMemo(() => {
-			return product.discount !== 0;
-		}, [product.discount]);
+		const newPrice =
+			product.discount !== 0 ? product.price - product.discount : product.price;
+
+		const isDiscount = product.discount !== 0;
+
+		const liked = useMemo(() => {
+			return isLiked(product.likes, (currentUser as User).id);
+		}, [product, currentUser]);
+
+		const onClickLike = async () => {
+			try {
+				const response = await changeFavoriteProduct({
+					id: product._id,
+					like: liked,
+				}).unwrap();
+				dispatch(setFavoritesStatus(response));
+			} catch (error) {
+				toast.error(
+					getMessageFromError(error, 'Неизвестная ошибка при поиске товара')
+				);
+			}
+		};
 
 		return (
 			<>
@@ -63,8 +90,21 @@ export const ProductCard: FC<IProductCardProps> = withProtection(
 									marginTop: '5px',
 									paddingLeft: '0',
 									lineHeight: '1',
-								}}>
-								<IconFavoritesGrey /> В избранное
+									display: 'flex',
+									alignItems: 'center',
+									gap: '8px',
+								}}
+								onClick={() => onClickLike()}>
+								{liked && (
+									<>
+										<IconFavoritesRed /> В избранном
+									</>
+								)}
+								{!liked && (
+									<>
+										<IconFavoritesGrey /> В избранное
+									</>
+								)}
 							</IconButton>
 							<Stack direction='column' gap='8px' className={s.block}>
 								<Typography variant='h6' sx={{ fontWeight: '600' }}>

@@ -10,7 +10,7 @@ import { PageTittle } from '../../shared/components/Title';
 import { getMessageFromError } from '../../shared/utils/error';
 import s from './Catalog.module.css';
 
-export const Catalog: FC = withProtection(() => {
+export const CatalogPage: FC = withProtection(() => {
 	const { searchValue } = useAppSelector(selectProducts);
 
 	const {

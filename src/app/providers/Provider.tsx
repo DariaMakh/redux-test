@@ -15,7 +15,7 @@ export const Provider = () => {
 					position='top-right'
 					autoClose={5000}
 					pauseOnHover
-					theme='colored'
+					theme='light'
 				/>
 			</PersistGate>
 		</ReduxProvider>

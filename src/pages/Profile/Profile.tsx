@@ -11,7 +11,7 @@ import OutlinedBtn from '../../shared/components/OutlinedBtn';
 import { PageTittle } from '../../shared/components/Title';
 import s from './Profile.module.css';
 
-export const Profile = withProtection(() => {
+export const ProfilePage = withProtection(() => {
 	const user = useAppSelector(selectUser) as User;
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();

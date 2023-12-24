@@ -7,7 +7,7 @@ import { withProtection } from '../../shared/HOCs/withProtection';
 import OutlinedBtn from '../../shared/components/OutlinedBtn';
 import { PageTittle } from '../../shared/components/Title';
 
-export const EditUser = withProtection(() => {
+export const EditUserPage = withProtection(() => {
 	const navigate = useNavigate();
 
 	const user = useAppSelector(selectUser) as User;
@@ -15,6 +15,7 @@ export const EditUser = withProtection(() => {
 	const [about, setAbout] = useState<string>(user.about);
 
 	const onSubmit = () => {
+		// todo
 		// dispatch(fetchEditedUser({ name, about }));
 		navigate('/profile');
 	};

@@ -2,15 +2,15 @@ import { FC } from 'react';
 import { useAppSelector } from '../../app/store/hooks';
 import { accessTokenSelector } from '../../app/store/reducers/auth/selectors';
 import { SignUpForm } from '../../features/SignUpForm';
-import { Profile } from '../Profile';
 import { Box, Avatar, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link } from 'react-router-dom';
+import { ProfilePage } from '../Profile';
 
-export const SignUp: FC = () => {
+export const SignUpPage: FC = () => {
 	const accessToken = useAppSelector(accessTokenSelector);
 	if (accessToken) {
-		return <Profile />;
+		return <ProfilePage />;
 	}
 
 	return (

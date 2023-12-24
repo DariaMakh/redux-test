@@ -6,11 +6,9 @@ import { withQuery } from '../../shared/HOCs/withQuery';
 import { getMessageFromError } from '../../shared/utils/error';
 import { ReviewForm } from '../../features/ReviewForm';
 
-export const AddReview: FC = withProtection(() => {
+export const AddReviewPage: FC = withProtection(() => {
 	const { productId } = useParams();
-	const ID = useMemo(() => {
-		return productId || '';
-	}, [productId]);
+	const ID = productId || '';
 
 	const {
 		data: product = [],
